@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الدروس المستفادة - Skooly Smart AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #050D1A;
+    font-family: 'Cairo', sans-serif;
+    color: #E8F4FF;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px 56px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(0,200,224,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 80%, rgba(11,79,158,0.10) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,200,224,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,224,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none; z-index: 0;
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 1100px; width: 100%;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  /* HEADER */
+  .header { text-align: center; margin-bottom: 52px; }
+  .brand { font-size: 12px; font-weight: 700; letter-spacing: 3px; color: rgba(0,200,224,0.6); text-transform: uppercase; margin-bottom: 12px; }
+  h1 { font-size: clamp(26px, 4.5vw, 46px); font-weight: 900; color: #fff; line-height: 1.25; }
+  h1 span { background: linear-gradient(135deg, #00C8E0, #7DF9FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { font-size: 13px; color: rgba(200,230,255,0.45); margin-top: 10px; font-weight: 500; }
+  .divider { width: 100px; height: 2px; background: linear-gradient(90deg,transparent,#00C8E0,transparent); margin: 18px auto 0; }
+
+  /* FLOW ROW */
+  .flow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+    position: relative;
+  }
+
+  /* STEP */
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    min-width: 0;
+  }
+
+  /* CIRCLE */
+  .circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: #fff;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    gap: 4px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .circle:hover { transform: scale(1.07); }
+
+  .circle .c-icon { font-size: 24px; }
+  .circle .c-en { font-size: 11px; font-weight: 900; letter-spacing: 2px; }
+  .circle .c-ar { font-size: 10px; font-weight: 700; opacity: 0.85; letter-spacing: 0; }
+
+  .s1 .circle { background: linear-gradient(135deg, #00C8E0, #007B8E); }
+  .s2 .circle { background: linear-gradient(135deg, #0B6B9E, #004F7E); }
+  .s3 .circle { background: linear-gradient(135deg, #007B8E, #005A6B); }
+  .s4 .circle { background: linear-gradient(135deg, #0B4F9E, #062A60); }
+
+  /* ARROW between steps */
+  .arrow {
+    width: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .arrow::after {
+    content: '◀';
+    font-size: 20px;
+    color: rgba(0,200,224,0.5);
+  }
+
+  /* HEXAGON CARD */
+  .hex-wrap {
+    margin-top: -22px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hex-card {
+    border-radius: 16px;
+    padding: 28px 20px 24px;
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+
+  .hex-card:hover { transform: translateY(-4px); }
+
+  .s1 .hex-card { background: linear-gradient(160deg, #00A8C0 0%, #006B7A 100%); box-shadow: 0 16px 40px rgba(0,200,224,0.2); }
+  .s2 .hex-card { background: linear-gradient(160deg, #0B79AE 0%, #054F7A 100%); box-shadow: 0 16px 40px rgba(11,121,174,0.2); }
+  .s3 .hex-card { background: linear-gradient(160deg, #00909E 0%, #005A66 100%); box-shadow: 0 16px 40px rgba(0,144,158,0.2); }
+  .s4 .hex-card { background: linear-gradient(160deg, #0B5FAE 0%, #062A60 100%); box-shadow: 0 16px 40px rgba(11,79,158,0.2); }
+
+  .hex-card::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    line-height: 1.4;
+  }
+
+  .card-items { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+
+  .card-items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.55;
+  }
+
+  .card-items li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(0,200,224,0.1);
+    font-size: 11px;
+    color: rgba(200,230,255,0.28);
+  }
+
+  @media (max-width: 720px) {
+    .flow { flex-direction: column; align-items: center; }
+    .arrow { transform: rotate(90deg); padding-top: 0; width: 100%; justify-content: center; padding: 6px 0; }
+    .step { width: 100%; max-width: 400px; }
+    .hex-wrap { margin-top: -16px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">⌚ Skooly Smart AI</div>
+    <h1>الدروس المستفادة من مشروع<br><span>سكولي</span> — أربع خطوات</h1>
+    <div class="divider"></div>
+    <p class="subtitle">مستخلصة من: ميثاق المشروع · KPIs · إدارة المخاطر · Gantt Chart · أصحاب المصلحة</p>
+  </div>
+
+  <!-- FLOW -->
+  <div class="flow">
+
+    <!-- STEP 1: IDENTIFY -->
+    <div class="step s1">
+      <div class="circle">
+        <div class="c-icon">🔍</div>
+        <div class="c-en">IDENTIFY</div>
+        <div class="c-ar">تحديد</div>
+      </div>
+      <div class="hex-wrap">
+        <div class="hex-card">
+          <div class="card-title">جمع الدروس المستفادة</div>
+          <ul class="card-items">
+            <li>ما الذي نجح؟ استلام الساعات في موعدها، تنظيم الفريق من 12 عضواً</li>
+            <li>ما التحديات؟ تأخر برمجة المنصة 3 أيام عن الجدول المستهدف</li>
+            <li>ما الذي يحتاج تطوير؟ قسم التطوير التقني وتطوير المنتج (أقل من 80%)</li>
+            <li>ما تأثير المخاطر؟ نسبة تسرب البيانات وثقة أولياء الأمور</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- STEP 2: DOCUMENT -->
+    <div class="step s2">
+      <div class="circle">
+        <div class="c-icon">📝</div>
+        <div class="c-en">DOCUMENT</div>
+        <div class="c-ar">توثيق</div>
+      </div>
+      <div class="hex-wrap">
+        <div class="hex-card">
+          <div class="card-title">توثيق الدروس المستفادة</div>
+          <ul class="card-items">
+            <li>النجاحات: إطلاق Pilot في 3 مدارس، ساعة ذكية بمستشعرات حيوية</li>
+            <li>التحديات: تأخر ربط المنصة، صعوبة اختيار الموردين الموثوقين</li>
+            <li>المخاطر الفعلية: ضعف ثقة أولياء الأمور بجمع البيانات الصحية</li>
+            <li>التوصيات: زيادة التواصل مع سدايا مبكراً، عقود توريد متعددة</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- STEP 3: STORE -->
+    <div class="step s3">
+      <div class="circle">
+        <div class="c-icon">🗄️</div>
+        <div class="c-en">STORE</div>
+        <div class="c-ar">حفظ</div>
+      </div>
+      <div class="hex-wrap">
+        <div class="hex-card">
+          <div class="card-title">حفظ الدروس المستفادة</div>
+          <ul class="card-items">
+            <li>تصنيف الدروس ضمن: تقني، تسويق، مالية، موارد بشرية، امتثال</li>
+            <li>إدارة المشروع: WBS، KPIs، وسجل المخاطر كمرجع رسمي</li>
+            <li>التقنية: توثيق بنية Firebase وAES-256 وربط GPS</li>
+            <li>التصميم: حفظ نماذج Canva وHTML كهوية بصرية موحدة</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- STEP 4: RETRIEVE -->
+    <div class="step s4">
+      <div class="circle">
+        <div class="c-icon">🚀</div>
+        <div class="c-en">RETRIEVE</div>
+        <div class="c-ar">استرجاع</div>
+      </div>
+      <div class="hex-wrap">
+        <div class="hex-card">
+          <div class="card-title">استرجاع الدروس المستفادة</div>
+          <ul class="card-items">
+            <li>تكرار النجاحات: نموذج Pilot→عقد والتوسع لـ 15 مدرسة (المرحلة 2)</li>
+            <li>تفادي التحديات: تأمين موردين بديلين قبل بدء أي مرحلة جديدة</li>
+            <li>تطبيق التوصيات: خطة تسويق أوسع، حملات استثمارية، ARR 811K</li>
+            <li>الامتثال: تحديث PDPL دورياً وإجراء Penetration Test ربع سنوي</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Skooly Smart AI — الدروس المستفادة © 2026 &nbsp;|&nbsp;
+    مدير المشروع: محمود محمد خادم &nbsp;|&nbsp; الرئيس التنفيذي: البراء البطاطي
+  </div>
+
+</div>
+</body>
+</html>
